@@ -2,17 +2,17 @@
 
 /**
  * Class NexmoMessage handles the methods and properties of sending an SMS message.
- * 
+ *
  * Usage: $var = new NexoMessage ( $account_key, $account_password );
  * Methods:
  *     sendText ( $to, $from, $message, $unicode = null )
  *     sendBinary ( $to, $from, $body, $udh )
  *     pushWap ( $to, $from, $title, $url, $validity = 172800000 )
  *     displayOverview( $nexmo_response=null )
- *     
+ *
  *     inboundText ( $data=null )
  *     reply ( $text )
- *     
+ *
  *
  */
 
@@ -70,7 +70,7 @@ class NexmoMessage {
 	 * message type. Otherwise set to TRUE if you require
 	 * unicode characters.
 	 */
-	function sendText ( $to, $from, $message, $unicode=null ) {
+	function sendText ( $to, $from, $message, $unicode=null, $options = array() ) {
 	
 		// Making sure strings are UTF-8 encoded
 		if ( !is_numeric($from) && !mb_check_encoding($from, 'UTF-8') ) {
@@ -103,6 +103,12 @@ class NexmoMessage {
 			'text' => $message,
 			'type' => $containsUnicode ? 'unicode' : 'text'
 		);
+		
+		// Insert extra options
+		foreach($options as $option => $value) {
+			$post[$option] = $value;
+		}
+		
 		return $this->sendRequest ( $post );
 		
 	}
